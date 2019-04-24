@@ -34,6 +34,22 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// add an endpoint that returns all the posts for a user
+// this is a sub-route or sub-resource
+router.get("/:id/userposts", async (req, res) => {
+  try {
+    const userposts = await Helpers.getUserPosts(req.params.id);
+
+    res.status(200).json(userposts);
+  } catch (error) {
+    // log error to database
+    console.log(error);
+    res.status(500).json({
+      message: "Error getting the posts for the user."
+    });
+  }
+});
+
 router.post("/", async (req, res) => {
   try {
     const user = await Helpers.insert(req.body);
