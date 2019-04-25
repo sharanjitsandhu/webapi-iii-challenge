@@ -1,12 +1,12 @@
 const express = require("express");
 
-const Helpers = require("../data/helpers/userDb.js");
+const userDb = require("../data/helpers/userDb.js");
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const users = await Helpers.get(req.query);
+    const users = await userDb.get(req.query);
     res.status(200).json(users);
   } catch (error) {
     console.log(error);
@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const user = await Helpers.getById(req.params.id);
+    const user = await userDb.getById(req.params.id);
 
     if (user) {
       res.status(200).json(user);
@@ -38,7 +38,7 @@ router.get("/:id", async (req, res) => {
 // this is a sub-route or sub-resource
 router.get("/:id/userposts", async (req, res) => {
   try {
-    const userposts = await Helpers.getUserPosts(req.params.id);
+    const userposts = await userDb.getUserPosts(req.params.id);
 
     res.status(200).json(userposts);
   } catch (error) {
@@ -52,7 +52,7 @@ router.get("/:id/userposts", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const user = await Helpers.insert(req.body);
+    const user = await userDb.insert(req.body);
     if (user) {
       res.status(201).json(user);
     } else {
@@ -68,7 +68,7 @@ router.post("/", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const count = await Helpers.remove(req.params.id);
+    const count = await userDb.remove(req.params.id);
     if (count > 0) {
       res.status(200).json({ message: "The user has been removed." });
     } else {
@@ -84,7 +84,7 @@ router.delete("/:id", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
-    const user = await Helpers.update(req.params.id, req.body);
+    const user = await userDb.update(req.params.id, req.body);
     if (user) {
       res.status(200).json(user);
     } else {
